@@ -25,6 +25,8 @@ function Sidebar({ setUrl }) {
         return
     }else if(urlOfsort !== undefined && urlOfsort !== 'Sort by...'){
         setUrl(urlOfsort);
+    }else{
+      setUrl(undefined);
     }
   }, [urlOfsort,urloftags]);
 

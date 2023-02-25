@@ -31,7 +31,9 @@ function MainContent(props) {
   };
 
   useEffect(() => {
-    fetchQuotes(pageNumber);
+    let newPageNumber = 1
+    setPageNumber(1)
+    fetchQuotes(newPageNumber);
   },[props.url]);
 
   const calculatePercentages = (upVote, downVote) => {
@@ -49,9 +51,20 @@ function MainContent(props) {
     }
   };
 
-  const voteFnc = (e) => {
+  const upVoteFnc = (e) => {
     console.log(e.target.parentElement.parentElement.getAttribute("data-id"));
+    axios.post(`http://localhost:3000/quotes/${e.target.parentElement.parentElement.getAttribute("data-id")}/upvote`)
+    .then(res => {
+      console.log(res)
+      console.log(e.target)
+      e.target.style.color='white'
+    })
+    .catch(error => console.log(error))
   };
+
+  const downVoteFnc = (e) => {
+    console.log(e.target.parentElement.parentElement.getAttribute("data-id"));
+  }
 
   const previousPage = () => {
     let newPageNumber = pageNumber - 1;
@@ -74,7 +87,7 @@ const nextPage = () => {
               <FontAwesomeIcon
                 icon={faCaretUp}
                 className="icons"
-                onClick={(e) => voteFnc(e)}
+                onClick={(e) => upVoteFnc(e)}
               />
               {calculatePercentages(
                 element.upvotesCount,
@@ -83,7 +96,7 @@ const nextPage = () => {
               <span>
                 {element.upvotesCount}/{element.downvotesCount}
               </span>
-              <FontAwesomeIcon icon={faCaretDown} className="icons" />
+              <FontAwesomeIcon icon={faCaretDown} className="icons" onClick={(e) => downVoteFnc(e)}/>
             </div>
             <div className="content">
               <p>{element.content}</p>
