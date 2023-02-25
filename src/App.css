@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  background-color: #4b4e6d;
+  overflow-y: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "header header header header header"
+    "aside main main main main"
+    "aside main main main main"
+    "aside main main main main"
+    "aside main main main main";
+}
+
+Header {
+  grid-area: header;
+  width: 100vw;
+  height: 5vh;
+}
+
+Sidebar {
+  grid-area: aside;
+  width: 20vw;
+  height: 95vh;
+}
+
+MainContent {
+  grid-area: main;
+  width: 80vw;
+  height: 95vh;
+}

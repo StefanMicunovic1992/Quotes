@@ -1,0 +1,89 @@
+main {
+  width: 80vw;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  section {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    .quote {
+      width: 70%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .rating {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        padding: 5px;
+        .percentage {
+          font-size: 1.5rem;
+          font-weight: bolder;
+        }
+        .red {
+          color: red;
+        }
+        .orange {
+          color: orange;
+        }
+        .yellow {
+          color: yellow;
+        }
+        .lightGreen {
+          color: greenyellow;
+        }
+        .green {
+          color: green;
+        }
+      }
+    }
+    .content {
+      background-color: aliceblue;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 80%;
+      border: 1px solid black;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      p {
+        font-weight: 600;
+      }
+      span {
+        margin-left: 80%;
+      }
+    }
+  }
+}
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  span {
+    font-size: 1.5rem;
+  }
+}
+
+.icons {
+  font-size: 1.5rem;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.hideIcon {
+  visibility: hidden;
+}
