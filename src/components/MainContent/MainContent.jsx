@@ -9,24 +9,30 @@ import {
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
-function MainContent() {
+function MainContent(props) {
   const [quotes, setQuotes] = useState();
   const [allQuotesNumber, setAllQuotesNumber] = useState();
   const [pageNumber, setPageNumber] = useState(1);
 
+
   const fetchQuotes = (pageNumber) => {
+    let url;
+    if(props.url !== undefined && props.url !=='Sort by'){
+      url = `http://localhost:3000/quotes?page=${pageNumber}&pageSize=5&${props.url}`
+    }else{
+      url = `http://localhost:3000/quotes?page=${pageNumber}&pageSize=5`
+    }
     axios
-      .get(`http://localhost:3000/quotes?page=${pageNumber}&pageSize=5`)
+      .get(url)
       .then((res) => {
         setQuotes(res.data.quotes);
         setAllQuotesNumber(res.data.quotesCount);
-        console.log(`http://localhost:3000/quotes?page=${pageNumber}&pageSize=5`)
       });
   };
 
   useEffect(() => {
     fetchQuotes(pageNumber);
-  }, []);
+  },[props.url]);
 
   const calculatePercentages = (upVote, downVote) => {
     const percentage = Math.round((upVote / (upVote + downVote)) * 100);
@@ -61,7 +67,6 @@ const nextPage = () => {
 
   return (
     <main>
-      <h2>Quotes</h2>
       <section id="sectionForRenderingQuotes">
         {quotes?.map((element) => (
           <article className="quote" key={element.id}>

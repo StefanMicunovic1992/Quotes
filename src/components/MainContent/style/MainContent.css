@@ -7,13 +7,14 @@ main {
   align-items: center;
 }
 main section {
-  padding: 20px;
+  padding-top: 300px;
+  padding-bottom: 100px;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 50px;
 }
 main section .quote {
   width: 70%;

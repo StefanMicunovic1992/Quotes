@@ -3,7 +3,6 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: rgb(137, 154, 137);
 }
 header #loginAndAddQuoteComponents {
   display: flex;
