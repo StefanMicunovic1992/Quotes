@@ -2,11 +2,48 @@ aside {
   width: 15vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  padding-top: 100px;
+  gap: 50px;
   align-items: center;
 }
 aside #sort {
   width: 50%;
   padding: 5px;
   border-radius: 10px;
+}
+aside #tagsFilter {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  height: 5vh;
+  transition: 0.3s;
+}
+aside #tagsFilter:hover {
+  height: 15vh;
+}
+aside #tagsFilter #tagsFilterBtn {
+  width: 100%;
+  padding: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  cursor: pointer;
+}
+aside #tagsFilter .showTags {
+  display: flex;
+  padding-top: 10px;
+  flex-direction: column;
+  gap: 10px;
+  transition: 0.3s;
+}
+aside #tagsFilter .hideTags {
+  display: none;
+}
+aside #tagsFilter #tags .tagElement {
+  display: flex;
+  gap: 10px;
+}
+aside #tagsFilter #tags .tagElement label {
+  font-size: 1.1rem;
+  color: whitesmoke;
 }/*# sourceMappingURL=Sidebar.css.map */
