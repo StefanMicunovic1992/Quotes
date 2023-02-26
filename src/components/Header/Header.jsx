@@ -1,15 +1,9 @@
 import './style/Header.css';
-import AddQuote from '../AddQuote/AddQuote';
-import Login from '../Login/Login';
 
 function Header() {
     return(
-        <header>
-            <img src="" alt="logo" />
-            <div id='loginAndAddQuoteComponents'>
-                <AddQuote></AddQuote>
-                <Login></Login>
-            </div>
+        <header id='header'>
+            <h1>Quotes</h1>
         </header>
     )
 }

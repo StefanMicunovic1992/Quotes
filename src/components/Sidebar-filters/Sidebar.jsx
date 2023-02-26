@@ -14,8 +14,6 @@ function Sidebar({ setUrl }) {
   }, []);
 
   useEffect(() => {
-    console.log(urlOfsort)
-    console.log(urloftags)
     if(urloftags !== undefined && urlOfsort !== undefined && urlOfsort !== 'Sort by...'){
         const url = `${urlOfsort}&${urloftags}`;
         setUrl(url);

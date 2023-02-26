@@ -2,39 +2,39 @@ import "./style/MainContent.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCaretDown,
-  faCaretUp,
-  faArrowRight,
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 function MainContent(props) {
   const [quotes, setQuotes] = useState();
   const [allQuotesNumber, setAllQuotesNumber] = useState();
   const [pageNumber, setPageNumber] = useState(1);
 
-
   const fetchQuotes = (pageNumber) => {
     let url;
-    if(props.url !== undefined && props.url !=='Sort by'){
-      url = `http://localhost:3000/quotes?page=${pageNumber}&pageSize=5&${props.url}`
-    }else{
-      url = `http://localhost:3000/quotes?page=${pageNumber}&pageSize=5`
+    if (props.url !== undefined && props.url !== "Sort by") {
+      url = `http://localhost:3000/quotes?page=${pageNumber}&pageSize=5&${props.url}`;
+    } else {
+      url = `http://localhost:3000/quotes?page=${pageNumber}&pageSize=5`;
     }
-    axios
-      .get(url)
-      .then((res) => {
-        setQuotes(res.data.quotes);
-        setAllQuotesNumber(res.data.quotesCount);
-      });
+    axios.get(url).then((res) => {
+      setQuotes(res.data.quotes);
+      setAllQuotesNumber(res.data.quotesCount);
+    });
   };
 
   useEffect(() => {
-    let newPageNumber = 1
-    setPageNumber(1)
+    let newPageNumber = 1;
+    setPageNumber(1);
     fetchQuotes(newPageNumber);
-  },[props.url]);
+  }, [props.url]);
+
+  useEffect(() => {
+    let voteObject = {
+      upVote: [],
+      downVote: [],
+    };
+    sessionStorage.setItem("vote", JSON.stringify(voteObject));
+  }, []);
 
   const calculatePercentages = (upVote, downVote) => {
     const percentage = Math.round((upVote / (upVote + downVote)) * 100);
@@ -51,20 +51,96 @@ function MainContent(props) {
     }
   };
 
-  const upVoteFnc = (e) => {
-    console.log(e.target.parentElement.parentElement.getAttribute("data-id"));
-    axios.post(`http://localhost:3000/quotes/${e.target.parentElement.parentElement.getAttribute("data-id")}/upvote`)
-    .then(res => {
-      console.log(res)
-      console.log(e.target)
-      e.target.style.color='white'
-    })
-    .catch(error => console.log(error))
+  const upVoteFnc = (e, elementId) => {
+    
+    const setUpVote = (element, idForVote) => {
+      axios
+        .post(`http://localhost:3000/quotes/${idForVote}/upvote`)
+        .then((res) => {
+          element.classList.toggle("triangleUp");
+          element.classList.toggle("voteUp");
+          element.nextElementSibling.nextElementSibling.nextElementSibling.setAttribute(
+            "disabled",
+            ""
+          );
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const deleteVote = (element, idForVote) => {
+      axios
+        .delete(`http://localhost:3000/quotes/${idForVote}/upvote`)
+        .then((res) => {
+          console.log(res);
+          element.classList.toggle("triangleUp");
+          element.classList.toggle("voteUp");
+          element.nextElementSibling.nextElementSibling.nextElementSibling.removeAttribute(
+            "disabled"
+          );
+        })
+        .catch((error) => console.log(error));
+    };
+
+    let vote = sessionStorage.getItem("vote");
+    vote = JSON.parse(vote);
+    const element = e.target;
+    if (vote.upVote.includes(elementId)) {
+      const index = vote.upVote.indexOf(elementId);
+      const x = vote.upVote.splice(index, 1);
+      sessionStorage.setItem("vote", JSON.stringify(vote));
+      deleteVote(element, elementId);
+    } else {
+      vote.upVote.push(elementId);
+      sessionStorage.setItem("vote", JSON.stringify(vote));
+      setUpVote(element, elementId);
+    }
   };
 
-  const downVoteFnc = (e) => {
-    console.log(e.target.parentElement.parentElement.getAttribute("data-id"));
-  }
+  const downVoteFnc = (e, elementId) => {
+    const setDownVote = (element, idForVote) => {
+      axios
+        .post(`http://localhost:3000/quotes/${idForVote}/downvote`)
+        .then((res) => {
+          console.log(res);
+          element.classList.toggle("triangleDown");
+          element.classList.toggle("voteDown");
+          element.previousElementSibling.previousElementSibling.previousElementSibling.setAttribute(
+            "disabled",
+            ""
+          );
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const deleteVote = (element, idForVote) => {
+      axios
+        .delete(`http://localhost:3000/quotes/${idForVote}/downvote`)
+        .then((res) => {
+          console.log(res);
+          element.classList.toggle("triangleDown");
+          element.classList.toggle("voteDown");
+          element.previousElementSibling.previousElementSibling.previousElementSibling.removeAttribute(
+            "disabled"
+          );
+        })
+        .catch((error) => console.log(error));
+    };
+
+    let vote = sessionStorage.getItem("vote");
+    vote = JSON.parse(vote);
+    const element = e.target;
+    const idForVote = elementId;
+    if (vote.downVote.includes(elementId)) {
+      const index = vote.downVote.indexOf(elementId);
+      const x = vote.downVote.splice(index, 1);
+      sessionStorage.setItem("vote", JSON.stringify(vote));
+      deleteVote(element, idForVote);
+    } else {
+      vote.downVote.push(idForVote);
+      sessionStorage.setItem("vote", JSON.stringify(vote));
+      setDownVote(element, idForVote);
+    }
+  };
 
   const previousPage = () => {
     let newPageNumber = pageNumber - 1;
@@ -72,11 +148,27 @@ function MainContent(props) {
     fetchQuotes(newPageNumber);
   };
 
-const nextPage = () => {
+  const nextPage = () => {
     let newPageNumbre = pageNumber + 1;
     setPageNumber(newPageNumbre);
     fetchQuotes(newPageNumbre);
-}
+  };
+
+  const checkIsUserUpVote = (element) => {
+    if (element.givenVote === "none" || element.givenVote === "downvote") {
+      return <input type="button" className="triangleUp" onClick={(e) => upVoteFnc(e,element.id)}/>
+    }else if(element.givenVote === "upvote"){
+      return <input type="button" className="voteUp" onClick={(e) => upVoteFnc(e,element.id)}/>
+    }
+  };
+
+  const checkUserDownVote = (element) => {
+    if(element.givenVote === 'none' || element.givenVote === 'upvote'){
+      return <input type="button" className="triangleDown" onClick={(e) => downVoteFnc(e,element.id)}/>
+    }else if(element.givenVote === 'downvote'){
+      return <input type="button" className="voteDown" onClick={(e) => downVoteFnc(e,element.id)}/>
+    }
+  }
 
   return (
     <main>
@@ -84,11 +176,7 @@ const nextPage = () => {
         {quotes?.map((element) => (
           <article className="quote" key={element.id}>
             <div className="rating" data-id={element.id}>
-              <FontAwesomeIcon
-                icon={faCaretUp}
-                className="icons"
-                onClick={(e) => upVoteFnc(e)}
-              />
+              {checkIsUserUpVote(element)}
               {calculatePercentages(
                 element.upvotesCount,
                 element.downvotesCount
@@ -96,7 +184,7 @@ const nextPage = () => {
               <span>
                 {element.upvotesCount}/{element.downvotesCount}
               </span>
-              <FontAwesomeIcon icon={faCaretDown} className="icons" onClick={(e) => downVoteFnc(e)}/>
+              {checkUserDownVote(element)}
             </div>
             <div className="content">
               <p>{element.content}</p>
@@ -108,7 +196,11 @@ const nextPage = () => {
           {pageNumber === 1 ? (
             <FontAwesomeIcon icon={faArrowLeft} className="hideIcon" />
           ) : (
-            <FontAwesomeIcon icon={faArrowLeft} className="icons" onClick={previousPage}/>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              className="icons"
+              onClick={previousPage}
+            />
           )}
           <span>
             {pageNumber} / {Math.ceil(allQuotesNumber / 5)}

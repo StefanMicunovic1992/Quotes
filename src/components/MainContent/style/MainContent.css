@@ -31,9 +31,54 @@ main section .quote .rating {
   gap: 5px;
   padding: 5px;
 }
+main section .quote .rating .triangleUp {
+  width: 20px;
+  height: 20px;
+  border-left: 10px solid #4b4e6d;
+  border-right: 10px solid #4b4e6d;
+  border-top: 1px solid #4b4e6d;
+  border-bottom: 20px solid black;
+  cursor: pointer;
+}
+main section .quote .rating .triangleDown {
+  width: 20px;
+  height: 20px;
+  border-left: 10px solid #4b4e6d;
+  border-right: 10px solid #4b4e6d;
+  border-top: 20px solid black;
+  border-bottom: 1px solid #4b4e6d;
+  cursor: pointer;
+}
+main section .quote .rating .voteUp {
+  width: 20px;
+  height: 20px;
+  border-left: 10px solid #4b4e6d;
+  border-right: 10px solid #4b4e6d;
+  border-top: 1px solid #4b4e6d;
+  border-bottom: 20px solid white;
+  cursor: pointer;
+}
+main section .quote .rating .voteDown {
+  width: 20px;
+  height: 20px;
+  border-left: 10px solid #4b4e6d;
+  border-right: 10px solid #4b4e6d;
+  border-top: 20px solid white;
+  border-bottom: 1px solid #4b4e6d;
+  cursor: pointer;
+}
 main section .quote .rating .percentage {
   font-size: 1.5rem;
   font-weight: bolder;
+}
+main section .quote .rating .iconsPercentage {
+  font-size: 1.7rem;
+}
+main section .quote .rating .iconsPercentage:hover {
+  cursor: pointer;
+}
+main section .quote .rating .iconsPercentageVote {
+  color: white;
 }
 main section .quote .rating .red {
   color: red;
@@ -88,4 +133,14 @@ main section .content span {
 
 .hideIcon {
   visibility: hidden;
+}
+
+#proba {
+  width: 20px;
+  height: 20px;
+  border-left: 10px solid #4b4e6d;
+  border-right: 10px solid #4b4e6d;
+  border-top: 20px solid white;
+  border-bottom: 1px solid #4b4e6d;
+  cursor: pointer;
 }/*# sourceMappingURL=MainContent.css.map */
